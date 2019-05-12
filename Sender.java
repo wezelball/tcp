@@ -1,29 +1,26 @@
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
+import java.util.*;
 
-public class Sender {
-    public static void main(String[] args) throws IOException {
-        String fromclient;
+public class Sender{
+public static void main(String args[]) throws IOException{
+    ServerSocket s=new ServerSocket(5000);
 
-        ServerSocket Server = new ServerSocket(25000);
+    try{
+        Socket ss=s.accept();
+        PrintWriter pw = new PrintWriter(ss.getOutputStream(),true);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader br1 = new BufferedReader(new InputStreamReader(ss.getInputStream()));
 
-        System.out.println("TCPServer Waiting for client on port 25000");
-
-        while (true) {
-            Socket connected = Server.accept();
-            System.out.println(
-                " THE CLIENT" + " " + connected.getInetAddress() + ":" + connected.getPort() + " IS CONNECTED ");
-
-            PrintWriter out = new PrintWriter(connected.getOutputStream(), true);
-            Scanner sc = new Scanner(System.in);
-
-
-            while (true) {
-                String input = sc.nextLine();
-                out.println(input);
-            }
+        System.out.println("Client connected..");
+        while(true)
+        {
+            System.out.println("Enter command:");
+            pw.println(br.readLine());
+            // Prints the reply back from python
+            System.out.println(br1.readLine());
         }
-
+    }
+    finally{}
     }
 }

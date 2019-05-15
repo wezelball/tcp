@@ -3,27 +3,28 @@ import java.net.*;
 import java.util.Scanner;
 
 public class Sender {
+
     public static void main(String[] args) throws IOException {
-        String fromclient;
 
-        ServerSocket Server = new ServerSocket(25000);
+        int port = 65000;
+        boolean connected  = false;
+    
+        try (ServerSocket serverSocket = new ServerSocket(port))    {
+            System.out.println("Server is listening on port " + port);
 
-        System.out.println("TCPServer Waiting for client on port 25000");
+            while(!connected) {
+            Socket socket = serverSocket.accept();
+            System.out.println("Pi client connected");
 
-        while (true) {
-            Socket connected = Server.accept();
-            System.out.println(
-                " THE CLIENT" + " " + connected.getInetAddress() + ":" + connected.getPort() + " IS CONNECTED ");
-
-            PrintWriter out = new PrintWriter(connected.getOutputStream(), true);
-            Scanner sc = new Scanner(System.in);
-
-
-            while (true) {
-                String input = sc.nextLine();
-                out.println(input);
+            new ServerThread(socket).start();
+            connected = true;
             }
-        }
 
+        } catch (IOException ex)  {
+            System.out.println("Server exception: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    
     }
+    
 }

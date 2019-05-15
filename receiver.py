@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 #!/usr/bin/env python2
 
 import socket
 import sys
 
 # Connects to the server
-# Code will waot for connection instead of crashing
+# Code will wait for connection instead of crashing
 def openSocket(server):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connected = False
